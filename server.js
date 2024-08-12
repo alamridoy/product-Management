@@ -13,12 +13,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 const api_redirect_path = require("./api/api");
+
 const port = process.env.PORT || 3003;
 const api_version = 1.0;
 
 
 
 app.use('/api', api_redirect_path);
+
 app.listen(port, async () => {
     console.log(`Fly Far Tech Product Management backend running port ${port}`);
 });

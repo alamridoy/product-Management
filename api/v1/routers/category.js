@@ -324,3 +324,4 @@ let checkItsNumber = async (value) => {
     return result;
 };
 
+module.exports = router;  

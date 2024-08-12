@@ -4,7 +4,7 @@ var jwt = require('jsonwebtoken');
 const isEmpty = require("is-empty");
 const keyData =  require('../jwt/config');
 const userModel = require('../models/user')
-const crypto = require("crypto");
+
 const routePermissionModel = require('../permission/route_permisson');
 
 
