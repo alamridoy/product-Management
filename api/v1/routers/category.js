@@ -5,6 +5,8 @@ const verifyToken = require('../middlewares/verifyToken')
 const moment = require("moment")
 const categoryModel = require('../models/category');
 const {routeAccessChecker} = require('../middlewares/routeAccess');
+const commonObject = require('../common/common');
+
 
 
 let current_date = new Date(); 
@@ -82,11 +84,11 @@ router.post('/list', [verifyToken, routeAccessChecker("categoryList")], async(re
         "key":req.body.key
     }
 
-    if (!(await checkItsNumber(reqData.limit)).success || reqData.limit < 1) {
+    if (!(await commonObject.checkItsNumber(reqData.limit)).success || reqData.limit < 1) {
         reqData.limit = 50;
     }
 
-    if (!(await checkItsNumber(reqData.offset)).success || reqData.offset < 0) {
+    if (!(await commonObject.checkItsNumber(reqData.offset)).success || reqData.offset < 0) {
         reqData.offset = 0
     }
 
@@ -298,7 +300,27 @@ router.put('/update', [verifyToken, routeAccessChecker("categoryUpdate")], async
 });
 
 
+// validator common function
+let checkItsNumber = async (value) => {
+    let result = {
+        success: false,
+        data: value,
+    };
 
+    try {
+        if (typeof value === "string") {
+            result.data = parseFloat(value);
+        }
 
+        if (!isNaN(value) || (value !== "" && value !== null && value !== undefined)) {
 
-module.exports = router;   
+            if ((typeof value === "number" && value >= 0) || (typeof value === "string" && (value == parseInt(value) || value == parseFloat(value)))) {
+                result.success = true;
+            }
+        }
+    } catch (error) { }
+
+    //console.log(result);
+    return result;
+};
+
